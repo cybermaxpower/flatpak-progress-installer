@@ -1,6 +1,16 @@
 #!/bin/bash
 # Automated Installer for Flatpak Progress Installer
 
+echo "👀 Checking system dependencies..."
+
+# Check if flatpak is installed
+if ! command -v flatpak &> /dev/null; then
+    echo "❌ Error: Flatpak is not installed on this system."
+    echo "Please install Flatpak first (e.g., 'sudo apt install flatpak') and try again."
+    exit 1
+fi
+
+
 echo "🚀 Starting installation..."
 
 # 1. Copy the main runtime engine to the global binary path
