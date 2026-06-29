@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Flatpak Progress Installer
+Comment=A graphical user interface for installing Flatpak applications with a live progress bar.
+Exec=/usr/local/bin/flatpak-progress-installer.sh %u
+Terminal=false
+Icon=system-software-install
+MimeType=application/vnd.flatpak;application/vnd.flatpak.ref;x-scheme-handler/flatpak+https;x-scheme-handler/flatpak;
+NoDisplay=true
