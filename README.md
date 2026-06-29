@@ -24,3 +24,9 @@ chmod +x install.sh
 ## 💡 How to Use
 * **In Your Browser (Brave/Firefox/Chrome):** Go to Flathub, click **Install** on any app, and select **Open xdg-open** when prompted.
 * **In Your File Manager (Nemo/Files):** Double-click any downloaded `.flatpakref` or `.flatpak` file.
+
+
+
+
+## Development Notes
+This application was designed and developed in collaboration with Google Gemini, utilizing AI-assisted software engineering to build the core utility and structure the native Debian packaging pipeline.
