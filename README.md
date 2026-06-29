@@ -29,4 +29,4 @@ chmod +x install.sh
 
 
 ## Development Notes
-This application was designed and developed in collaboration with Google Gemini, utilizing AI-assisted software engineering to build the core utility and structure the native Debian packaging pipeline.
+This application was designed and developed in collaboration with Google Gemini, utilizing AI-assisted software engineering to build the core utility and structure the packaging pipeline.
