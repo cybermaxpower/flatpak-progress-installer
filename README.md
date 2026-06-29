@@ -1,6 +1,8 @@
 # Flatpak Progress Installer
 
+![Project Preview](preview.png)
 A native graphical user interface wrapper built to capture and stream real-time installation progress data out of the Linux Flatpak ecosystem into clean desktop dialogues.
+
 
 ## 🚀 Quick Installation
 
