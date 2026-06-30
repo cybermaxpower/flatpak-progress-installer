@@ -15,7 +15,7 @@ This tool is built for users who want to know exactly what is happening under th
 Open your terminal, clone this repository, and run the automated installation script:
 
 ```bash
-git clone [https://github.com/YOUR_GITHUB_USERNAME/flatpak-progress-installer.git](https://github.com/YOUR_GITHUB_USERNAME/flatpak-progress-installer.git)
+git clone [https://github.com/YOUR_GITHUB_USERNAME/flatpak-progress-installer.git](https://github.com/cybermaxpower/flatpak-progress-installer.git)
 cd flatpak-progress-installer
 chmod +x install.sh
 ./install.sh
