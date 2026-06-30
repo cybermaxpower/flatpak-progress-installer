@@ -1,6 +1,7 @@
 # Flatpak Progress Installer
 
 ![Project Preview](preview.png)
+
 A native graphical user interface wrapper built to capture and stream real-time installation progress data out of the Linux Flatpak ecosystem into clean desktop dialogues.
 
 ## Motivation
@@ -10,23 +11,35 @@ While I appreciate the convenience of large software centers, I wanted a lightwe
 
 This tool is built for users who want to know exactly what is happening under the hood during their Flatpak setup.
 
-## 🚀 Quick Installation
+## 🌐 Compatibility & Requirements
+Compatibility: 100% Cross-Distribution (Works on MX Linux, Ubuntu, Debian, Fedora, Arch, openSUSE, etc.)
 
+Dependencies: Before running the script, ensure you have flatpak and zenity installed via your system's package manager:
+
+* **Debian / Ubuntu / MX Linux:** `sudo apt install flatpak zenity`
+  
+* **Fedora:** `sudo dnf install flatpak zenity`
+  
+* **Arch Linux:** `sudo pacman -S flatpak zenity`
+
+## 🚀 Quick Installation
 Open your terminal, clone this repository, and run the automated installation script:
 
-```bash
+~~~Bash
 git clone https://github.com/cybermaxpower/flatpak-progress-installer.git
 cd flatpak-progress-installer
 chmod +x install.sh
 ./install.sh
-```
+~~~
 
 ## 💡 How to Use
-* **In Your Browser (Brave/Firefox/Chrome):** Go to [Flathub](https://flathub.org/), click **Install** on any app, and select **Open xdg-open** when prompted.
-* **In Your File Manager (Nemo/Files):** Double-click any downloaded `.flatpakref` or `.flatpak` file.
+In Your Browser (Brave/Firefox/Chrome): Go to [https://flathub.org]Flathub, click Install on any app, and select Open xdg-open when prompted.
+
+In Your File Manager (Nemo/Files): Double-click any downloaded .flatpakref or .flatpak file.
+
+## 📄 License
+This project is open-source and available under the MIT License.
 
 
 
 
-## Development Notes
-This application was designed and developed in collaboration with Google Gemini, utilizing AI-assisted software engineering to build the core utility and structure the packaging pipeline.
