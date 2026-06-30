@@ -4,10 +4,21 @@
 
 echo "👀 Checking system dependencies..."
 
-# Check if flatpak is installed
+# Check if both required dependencies are present
+MISSING_DEPS=()
+
 if ! command -v flatpak &> /dev/null; then
-    echo "❌ Error: Flatpak is not installed on this system."
-    echo "Please install Flatpak first (e.g., 'sudo apt install flatpak') and try again."
+    MISSING_DEPS+=("flatpak")
+fi
+
+if ! command -v zenity &> /dev/null; then
+    MISSING_DEPS+=("zenity")
+fi
+
+# If any dependencies are missing, alert the user and exit
+if [ ${#MISSING_DEPS[@]} -ne 0 ]; then
+    echo "Error: Missing required system dependencies: ${MISSING_DEPS[*]}"
+    echo "Please install them via your distribution's package manager and try again."
     exit 1
 fi
 
