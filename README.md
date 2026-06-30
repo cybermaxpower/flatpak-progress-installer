@@ -33,7 +33,7 @@ chmod +x install.sh
 ~~~
 
 ## 💡 How to Use
-In Your Browser (Brave/Firefox/Chrome): Go to [https://flathub.org] Flathub, click Install on any app, and select Open xdg-open when prompted.
+In Your Browser (Brave/Firefox/Chrome): Go to (Flathub)[https://flathub.org], click Install on any app, and select Open xdg-open when prompted.
 
 In Your File Manager (Nemo/Files): Double-click any downloaded .flatpakref or .flatpak file.
 
