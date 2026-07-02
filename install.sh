@@ -1,24 +1,16 @@
 #!/bin/bash
-# Automated Installer for Flatpak Progress Installer
-
+# ==============================================================================
+# Tool Name:    Automated Installer for Flatpak Progress Installer
+# Description:  Deploys the main script to global binaries, creates the desktop 
+#               launcher entry, and registers default protocol/MIME handlers.
+# ==============================================================================
 
 echo "👀 Checking system dependencies..."
 
-# Check if both required dependencies are present
-MISSING_DEPS=()
-
+# Check if flatpak is installed
 if ! command -v flatpak &> /dev/null; then
-    MISSING_DEPS+=("flatpak")
-fi
-
-if ! command -v zenity &> /dev/null; then
-    MISSING_DEPS+=("zenity")
-fi
-
-# If any dependencies are missing, alert the user and exit
-if [ ${#MISSING_DEPS[@]} -ne 0 ]; then
-    echo "Error: Missing required system dependencies: ${MISSING_DEPS[*]}"
-    echo "Please install them via your distribution's package manager and try again."
+    echo "❌ Error: Flatpak is not installed on this system."
+    echo "Please install Flatpak first (e.g., 'sudo apt install flatpak') and try again."
     exit 1
 fi
 
@@ -29,16 +21,34 @@ echo "📦 Copying installer script to /usr/local/bin..."
 sudo cp flatpak-progress-installer.sh /usr/local/bin/
 sudo chmod +x /usr/local/bin/flatpak-progress-installer.sh
 
-# 2. Copy the desktop integration file to the user's local application directory
+# 2. Automatically generate/overwrite the clean desktop entry in the proper directory
 echo "🖥️  Integrating desktop settings..."
 APPS_DIR="$HOME/.local/share/applications"
-mkdir -p "$APPS_DIR"
-cp flatpak-progress-installer.desktop "$APPS_DIR/"
+LAUNCHER_FILE="$APPS_DIR/flatpak-progress-installer.desktop"
 
-# 3. Force the operating system to register the new protocol handlers
+mkdir -p "$APPS_DIR"
+
+cat << EOF > "$LAUNCHER_FILE"
+[Desktop Entry]
+Type=Application
+Name=Flatpak Progress Installer
+Exec=/usr/local/bin/flatpak-progress-installer.sh %u
+Terminal=false
+Categories=System;
+MimeType=x-scheme-handler/flatpak;x-scheme-handler/flatpak+https;x-scheme-handler/appstream;application/vnd.flatpak.ref;application/vnd.flatpak;
+EOF
+
+chmod +x "$LAUNCHER_FILE"
+
+# 3. Force the operating system and Brave to register the new protocol handlers
 echo "⚙️  Rebuilding MIME-type application associations..."
 update-desktop-database "$APPS_DIR"
-xdg-mime default flatpak-progress-installer.desktop x-scheme-handler/flatpak+https
-xdg-mime default flatpak-progress-installer.desktop x-scheme-handler/flatpak
 
-echo "✅ Installation successful! Your browser and file manager are now ready to use this utility."
+# Assign this app to manage every single possible flatpak trigger link or file format
+xdg-mime default flatpak-progress-installer.desktop x-scheme-handler/flatpak
+xdg-mime default flatpak-progress-installer.desktop x-scheme-handler/flatpak+https
+xdg-mime default flatpak-progress-installer.desktop x-scheme-handler/appstream
+xdg-mime default flatpak-progress-installer.desktop application/vnd.flatpak.ref
+xdg-mime default flatpak-progress-installer.desktop application/vnd.flatpak
+
+echo "✅ Installation successful! Your browser and file manager are now mapped to this utility."
