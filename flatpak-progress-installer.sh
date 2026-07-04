@@ -40,7 +40,7 @@ if [ $? -ne 0 ]; then
     exit 0
 fi
 
-# 3. CHOOSE INSTALLATION SCOPE (Consolidated to prevent layout syntax errors)
+# 3. CHOOSE INSTALLATION SCOPE
 INSTALL_TYPE=$(zenity --list --radiolist --title="Installation Scope" --text="How would you like to install <b>$DISPLAY_NAME</b>?" --width=600 --height=350 --column="Select" --column="Scope" --column="Description" TRUE "User" "Install only for your individual user account" FALSE "System" "Install system-wide for all users (Requires Authorization)")
 
 if [ $? -ne 0 ] || [ -z "$INSTALL_TYPE" ]; then
@@ -78,7 +78,8 @@ INSTALL_LOG=$(mktemp)
 # ==========================================
 # 6. CARRIAGE-RETURN TRANSLATION & LIVE STREAM
 # ==========================================
-flatpak install $SCOPE_FLAG -y "$TARGET" 2>&1 | tr '\r' '\n' | tee "$INSTALL_LOG" | while read -r line; do
+# Added --noninteractive to suppress multiple text confirmation requests
+flatpak install $SCOPE_FLAG -y --noninteractive "$TARGET" 2>&1 | tr '\r' '\n' | tee "$INSTALL_LOG" | while read -r line; do
     [ -z "$line" ] && continue
     
     # Catch streaming percentages (e.g., "Downloading... 45%")
@@ -106,7 +107,7 @@ INSTALL_EXIT_STATUS=${PIPESTATUS[0]}
 
 # ==========================================
 # 7. POST-INSTALL CHECK & VALIDATION
-# ==========================================
+# ==============================================
 if [ $INSTALL_EXIT_STATUS -eq 0 ]; then
     zenity --info --title="Success" --text="<b>$DISPLAY_NAME</b> has been installed cleanly and added to your Application Menu!" --width=380
     rm -f "$INSTALL_LOG"
