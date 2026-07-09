@@ -43,15 +43,13 @@ In Your File Manager (Nemo/Files): Double-click any downloaded .flatpakref or .f
 This project is open-source and available under the MIT License.
 
 ## ⚖️ Warranty & Liability Disclaimer
-NO WARRANTY (PROVIDED "AS IS")
-This software is provided completely "as is" without any warranty of any kind, either expressed or implied.
 
-### LIMITATION OF LIABILITY
-Use at Your Own Risk: The developer is not liable for any damage, data loss, or system issues that may occur on your computer from installing, running, or uninstalling software using this tool.
+### No Warranty ("As-Is" Software)
+This software is provided completely **"as-is"** without warranty of any kind, either express or implied. The author makes no guarantees regarding its functionality, stability, or suitability for any specific purpose.
 
-### User Responsibility:
- Uninstalling application containers can permanently delete local user configurations, settings, or saved files linked to those specific apps. It is your absolute responsibility to verify what you are deleting before confirming.
-
+### Limitation of Liability
+* **Use at Your Own Risk:** The developer assumes no liability for any system issues, data loss, or hardware damages that may occur from installing, executing, or removing software through this utility.
+* **User Responsibility:** Uninstalling flatpak containers can permanently erase local application data, configurations, or user settings linked to those environments. It is your absolute responsibility to double-check and verify all actions before confirmation.
 
 
 
