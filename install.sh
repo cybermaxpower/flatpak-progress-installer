@@ -44,11 +44,14 @@ chmod +x "$LAUNCHER_FILE"
 echo "⚙️  Rebuilding MIME-type application associations..."
 update-desktop-database "$APPS_DIR"
 
-# Assign this app to manage every single possible flatpak trigger link or file format
-xdg-mime default flatpak-progress-installer.desktop x-scheme-handler/flatpak
-xdg-mime default flatpak-progress-installer.desktop x-scheme-handler/flatpak+https
-xdg-mime default flatpak-progress-installer.desktop x-scheme-handler/appstream
-xdg-mime default flatpak-progress-installer.desktop application/vnd.flatpak.ref
-xdg-mime default flatpak-progress-installer.desktop application/vnd.flatpak
+# Ensure the user's local mimeapps.list exists
+USER_MIME="$HOME/.config/mimeapps.list"
+mkdir -p "$HOME/.config"
+touch "$USER_MIME"
+
+# Add default application entries cleanly to the user's local profile
+for mime in "x-scheme-handler/flatpak" "x-scheme-handler/flatpak+https" "x-scheme-handler/appstream" "application/vnd.flatpak.ref" "application/vnd.flatpak"; do
+    xdg-mime default flatpak-progress-installer.desktop "$mime"
+done
 
 echo "✅ Installation successful! Your browser and file manager are now mapped to this utility."
