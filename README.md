@@ -76,8 +76,21 @@ If your browser stops launching the installer when clicking Flathub buttons:
 2. **Re-assert user defaults:**
    Simply re-run `./install.sh` at any time to repair your desktop launcher and MIME associations.
 
-3. **Brave / Chromium Protocol Handler Reset:**
-   Navigate to `brave://settings/handlers` in your browser and ensure **"Sites can ask to handle protocols"** is enabled, and no `flatpak` schemas are marked as blocked.
+3. **Browser Protocol Handler Resets**
+
+   If your web browser stops prompting you to open Flathub links with this installer, ensure protocol handlers are enabled in your browser settings:
+
+   #### Chromium-Based Browsers (Brave, Google Chrome, Chromium, Vivaldi)
+   1. Open your browser settings by navigating to:
+    * **Brave:** `brave://settings/handlers`
+    * **Chrome / Chromium / Vivaldi:** `chrome://settings/handlers`
+   2. Ensure **"Sites can ask to handle protocols"** is toggled **ON**.
+   3. Under the custom handlers list, ensure `flatpak` or `appstream` is not listed under blocked protocols.
+
+   #### Mozilla Firefox
+   1. Open `about:preferences` and scroll down to the **Applications** section (or search for "Applications").
+   2. Search the list for `flatpak`, `flatpak+https`, or `application/vnd.flatpak.ref`.
+   3. Set the action column to **"Use Flatpak Progress Installer"** (or **"Always ask"**)..
 
 ---
 
