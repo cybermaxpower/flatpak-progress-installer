@@ -13,6 +13,13 @@
 # Ensure Zenity plays nicely with both Wayland and X11
 export GDK_BACKEND=wayland,x11
 
+# Use the classic 2D Cairo engine (vastly faster than 'software' 3D emulation on the CPU)
+export GSK_RENDERER=cairo
+
+# FORCE background terminal utilities to output in English 
+# This prevents localized systems (e.g., Russian, French) from breaking the dependency parser
+export LC_ALL=C
+
 # 1. Ensure an input target was passed first
 if [ -z "$1" ]; then
     zenity --error --title="Flatpak Installer" --text="No installation App ID or flatpak file provided." --width=350
@@ -64,7 +71,7 @@ fi
 
 # 5. Guard: Ensure the chosen environment has the Flathub remote repository added
 if ! flatpak remotes $REMOTE_FLAG | grep -q "flathub"; then
-    zenity --question --title="Flathub Repository Required" --text="Flathub is required to download this application in this scope.\n\nWould you like to automatically configure Flathub now?" --width=400
+    zenity --question   --title="Flathub Repository Required" --text="Flathub is required to download this application in this scope.\n\nWould you like to automatically configure Flathub now?" --width=400
     if [ $? -eq 0 ]; then
         flatpak remote-add $REMOTE_FLAG --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
     else
@@ -101,7 +108,7 @@ flatpak install $SCOPE_FLAG -y --noninteractive "$TARGET" 2>&1 | tr '\r' '\n' | 
     elif [[ "$line" == *"Installing"* ]]; then
         echo "# Unpacking runtime components..."
     fi
-done | zenity --progress --title="Flatpak Installer" --text="Connecting to download mirrors..." --percentage=0 --auto-close --no-cancel --width=470
+done | zenity --progress --pulsate --title="Flatpak Installer" --text="Connecting to download mirrors..." --percentage=0 --auto-close --no-cancel --width=470
 
 INSTALL_EXIT_STATUS=${PIPESTATUS[0]}
 
