@@ -17,7 +17,7 @@ export GDK_BACKEND=wayland,x11
 export GSK_RENDERER=cairo
 
 # FORCE background terminal utilities to output in English 
-# This prevents localized systems (e.g., Russian, French) from breaking the dependency parser
+# This prevents localized systems from breaking the dependency parser
 export LC_ALL=C
 
 # 1. Ensure an input target was passed first
@@ -32,12 +32,12 @@ TARGET="$1"
 TARGET="${TARGET#flatpak+}"
 TARGET="${TARGET#file://}"
 
-# Extract the pure App ID (e.g., io.github.juancarlosbernal.FolderPlay)
+# Extract the pure App ID (e.g., net.blip.Blip)
 CLEAN_ID=$(basename "$TARGET")
 CLEAN_ID="${CLEAN_ID%.flatpakref}"
 CLEAN_ID="${CLEAN_ID%.flatpak}"
 
-# Extract a beautiful, human-friendly app name (e.g., FolderPlay)
+# Extract a beautiful, human-friendly app name (e.g., Blip)
 DISPLAY_NAME="${CLEAN_ID##*.}"
 [ -z "$DISPLAY_NAME" ] && DISPLAY_NAME="$CLEAN_ID"
 
@@ -56,9 +56,12 @@ if [ $? -ne 0 ] || [ -z "$INSTALL_TYPE" ]; then
 fi
 
 if [ "$INSTALL_TYPE" = "System" ]; then
+    # Use pkexec to grant root privileges for system-wide container writes
+    ELEVATOR="pkexec"
     SCOPE_FLAG=""
     REMOTE_FLAG=""
 else
+    ELEVATOR=""
     SCOPE_FLAG="--user"
     REMOTE_FLAG="--user"
 fi
@@ -71,9 +74,9 @@ fi
 
 # 5. Guard: Ensure the chosen environment has the Flathub remote repository added
 if ! flatpak remotes $REMOTE_FLAG | grep -q "flathub"; then
-    zenity --question   --title="Flathub Repository Required" --text="Flathub is required to download this application in this scope.\n\nWould you like to automatically configure Flathub now?" --width=400
+    zenity --question --title="Flathub Repository Required" --text="Flathub is required to download this application in this scope.\n\nWould you like to automatically configure Flathub now?" --width=400
     if [ $? -eq 0 ]; then
-        flatpak remote-add $REMOTE_FLAG --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+        $ELEVATOR flatpak remote-add $REMOTE_FLAG --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
     else
         exit 0
     fi
@@ -85,11 +88,10 @@ INSTALL_LOG=$(mktemp)
 # ==========================================
 # 6. CARRIAGE-RETURN TRANSLATION & LIVE STREAM
 # ==========================================
-# Added --noninteractive to suppress multiple text confirmation requests
-flatpak install $SCOPE_FLAG -y --noninteractive "$TARGET" 2>&1 | tr '\r' '\n' | tee "$INSTALL_LOG" | while read -r line; do
+# Prepend $ELEVATOR (pkexec) and explicit 'flathub' remote target to prevent non-interactive failures
+$ELEVATOR flatpak install $SCOPE_FLAG -y --noninteractive --or-update flathub "$CLEAN_ID" 2>&1 | tr '\r' '\n' | tee "$INSTALL_LOG" | while read -r line; do
     [ -z "$line" ] && continue
     
-    # Catch streaming percentages (e.g., "Downloading... 45%")
     if [[ "$line" =~ ([0-9]+)% ]]; then
         PERCENT="${BASH_REMATCH[1]}"
         
@@ -108,13 +110,13 @@ flatpak install $SCOPE_FLAG -y --noninteractive "$TARGET" 2>&1 | tr '\r' '\n' | 
     elif [[ "$line" == *"Installing"* ]]; then
         echo "# Unpacking runtime components..."
     fi
-done | zenity --progress --pulsate --title="Flatpak Installer" --text="Connecting to download mirrors..." --percentage=0 --auto-close --no-cancel --width=470
+done | zenity --progress --title="Flatpak Installer" --text="Connecting to download mirrors..." --percentage=0 --auto-close --no-cancel --width=470
 
 INSTALL_EXIT_STATUS=${PIPESTATUS[0]}
 
 # ==========================================
 # 7. POST-INSTALL CHECK & VALIDATION
-# ==============================================
+# ==========================================
 if [ $INSTALL_EXIT_STATUS -eq 0 ]; then
     zenity --info --title="Success" --text="<b>$DISPLAY_NAME</b> has been installed cleanly and added to your Application Menu!" --width=380
     rm -f "$INSTALL_LOG"
