@@ -35,7 +35,7 @@ Make sure your system has the following installed (pre-installed on most GTK-bas
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/your-username/flatpak-progress-installer.git
+   git clone https://github.com/cybermaxpower/flatpak-progress-installer.git
    cd flatpak-progress-installer
    ```
 
